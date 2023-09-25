@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MvcMovie.Data;
+using MvcMovie.Models;
+
 namespace MvcMovie
 {
     public class Program
@@ -14,7 +16,17 @@ namespace MvcMovie
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+
             var app = builder.Build();
+
+
+            //SeedData
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                SeedData.Initialize(services);
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
